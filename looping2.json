@@ -54,7 +54,10 @@
             },
             "dependsOn": [
                 "storagename"
-            ]
+            ],
+            "properties": {
+
+            }
         }
     ],
     "outputs": {
