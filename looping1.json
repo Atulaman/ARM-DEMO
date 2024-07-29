@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storagecount": {
+            "type": "int",
+            "metadata": {
+                "description": "specifies no. of storage account"
+            },
+            "defaultValue": 3
+        },
+        "storagename": {
+            "type": "array",
+            "metadata": {
+                "description": "description"
+            },
+            "defaultValue": [
+               "miku",
+               "chiku",
+               "diku"
+            ]
+        }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "[concat('storage', uniqueString(resourceGroup().id), parameters('storagename')[copyIndex('storagename')])]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2023-01-01",
+            "tags": {
+                "displayName": "storageaccount1"
+            },
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Premium_LRS",
+                "tier": "Premium"
+            },
+            "copy": {
+                "name": "storagename",
+                "count": "[parameters('storagecount')]",
+                "mode": "Serial",
+                "batchSize": 1
+            }
+        }
+    ],
+    "outputs": {
+        "parameternames": {
+            "type": "array",
+            "value": "[parameters('storagename')]"
+        }
+    }
+}
